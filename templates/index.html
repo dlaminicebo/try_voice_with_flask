@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Voice Assistant</h1>
+        <button id="start-btn">Start Assistant</button>
+        <div id="response-box"></div>
+    </div>
+
+    <script>
+        document.getElementById('start-btn').addEventListener('click', function() {
+            const command = prompt("Please enter your command:");
+            fetch('/perform_task', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ command: command }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response-box').innerHTML = data.response;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
